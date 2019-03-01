@@ -1,0 +1,49 @@
+module cisco-asa-vpn {
+
+  namespace "http://example.com/cisco-asa-vpn";
+  prefix cisco-asa-vpn;
+
+  import ietf-inet-types {
+    prefix inet;
+  }
+  import tailf-common {
+    prefix tailf;
+  }
+  import tailf-ncs {
+    prefix ncs;
+  }
+
+  description
+    "Bla bla...";
+
+  revision 2016-01-01 {
+    description
+      "Initial revision.";
+  }
+
+  augment /ncs:devices/ncs:device {
+    when "current()/ncs:platform/ncs:model = 'ASAv'";
+
+    tailf:action copy-file {
+      tailf:actionpoint cisco-asa-vpn-copy-file;
+      input {
+        leaf direction {
+          type enumeration {
+            enum "TO";
+          }
+        }
+        leaf file {
+          description "Absolute file path risiding on NSO server";
+          tailf:info "Absolute file path risiding on NSO server";
+          type string;
+        }
+      }
+      output {
+        leaf result {
+          type string;
+        }
+      }
+    }
+
+  }
+}
